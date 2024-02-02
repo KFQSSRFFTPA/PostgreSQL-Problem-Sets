@@ -95,6 +95,13 @@ INSERT INTO viewership VALUES
 (129, 'phone', '2022-02-09 00:00:00'),
 (145, 'tablet', '2022-02-24 00:00:00');
 
+SELECT 
+COUNT(device_type) FILTER (WHERE device_type = 'laptop') AS laptop_views,
+COUNT(device_type) FILTER (WHERE device_type IN ('phone', 'tablet')) AS mobile_views
+FROM viewership;
+
+-- or
+
 WITH lv AS
 (SELECT COUNT(device_type) AS laptop_views
 FROM viewership
@@ -108,8 +115,8 @@ FROM lv, mv;
 -- or
 
 SELECT
-	SUM(CASE WHEN device_type = 'laptop' THEN 1 ELSE 0 END) AS laptop_views,
-	SUM(CASE WHEN device_type IN ('tablet','phone') THEN 1 ELSE 0 END) AS mobile_views
+SUM(CASE WHEN device_type = 'laptop' THEN 1 ELSE 0 END) AS laptop_views,
+SUM(CASE WHEN device_type IN ('tablet','phone') THEN 1 ELSE 0 END) AS mobile_views
 FROM viewership;
 ```
 
